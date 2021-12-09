@@ -1,16 +1,23 @@
 import numpy as np
+import pandas as pd
 
 from preprocessor_1 import preprocess
 from sklearn.model_selection import train_test_split
+from sklearn.feature_selection import mutual_info_classif
+import matplotlib.pyplot as plt
 from logistic_regression import predict, train, loss
+from utils import info_gain
 from datetime import datetime
 
 startTime = datetime.now()
 
 data = preprocess()
+
 data.insert(0, 'Ones', 1)
 
 training_set, test_set = train_test_split(data, test_size=0.2, random_state=44)
+
+# info_gain(training_set)
 
 y_training = training_set.pop('Churn').to_frame().to_numpy()
 x_training = training_set.to_numpy()
