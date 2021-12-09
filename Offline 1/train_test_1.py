@@ -2,7 +2,7 @@ import numpy as np
 
 from preprocessor_1 import preprocess
 from sklearn.model_selection import train_test_split
-from logistic_regression import tanh_function, train, loss
+from logistic_regression import predict, train, loss
 from datetime import datetime
 
 startTime = datetime.now()
@@ -20,7 +20,8 @@ x_test = test_set.to_numpy()
 
 w = train(x_training, y_training, no_of_iterations=100000)
 z = np.dot(x_test, w)
-h_test = tanh_function(z)
+h_test = np.tanh(z)
+h_test = predict(h_test)
 test_set_error = loss(h_test, y_test, y_test.shape[0])
 print('Error rate in test set = {}'.format(test_set_error))
 print('The script took {0} second !'.format(datetime.now() - startTime))
