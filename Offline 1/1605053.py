@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[69]:
+# In[370]:
 
 
 # imports
@@ -20,7 +20,7 @@ from IPython.core.display import display
 import json
 
 
-# In[70]:
+# In[371]:
 
 
 # set random seed
@@ -28,7 +28,7 @@ random.seed(a=2)
 np.random.seed(5)
 
 
-# In[71]:
+# In[372]:
 
 
 # information gain function
@@ -47,7 +47,7 @@ def info_gain(df: DataFrame):
     return list(info_gain_map.keys())
 
 
-# In[72]:
+# In[373]:
 
 
 # One-Hot encoding
@@ -57,7 +57,7 @@ def encode_and_bind(original_dataframe, feature_to_encode):
     )
 
 
-# In[73]:
+# In[374]:
 
 
 # pre-processor 1
@@ -106,7 +106,7 @@ def preprocess_telco_data():
     return telco_data
 
 
-# In[74]:
+# In[375]:
 
 
 # pre processor 2
@@ -165,7 +165,7 @@ def preprocess_adult_data():
     return adult_data, adult_test
 
 
-# In[75]:
+# In[376]:
 
 
 # pre processor 3
@@ -194,7 +194,30 @@ def preprocess_cc_data():
     return cc_data
 
 
-# In[76]:
+# In[377]:
+
+
+def read_online_data():
+    data = pd.read_csv('Dataset.csv')
+    data = data.astype(float)
+    return data
+
+def process_online_data(online_data: DataFrame):
+    all_columns = list(online_data.columns)
+    online_data['quality'] = np.where(online_data['quality'] > 5, 1.0,0.0)
+    online_data[all_columns] = MinMaxScaler().fit_transform(online_data[all_columns])
+
+    return online_data
+
+def preprocess_online_data():
+    online_data = read_online_data()
+    online_data = process_online_data(online_data)
+    online_data.to_csv('online_data.csv')
+
+    return online_data
+
+
+# In[378]:
 
 
 # loss function
@@ -203,7 +226,7 @@ def loss(y_predicted, y_actual, size):
     # return np.sum((y_actual - y_predicted) ** 2) / size
 
 
-# In[77]:
+# In[379]:
 
 
 def statistics(y_predict, y_actual):
@@ -217,7 +240,7 @@ def statistics(y_predict, y_actual):
     print('F1 score {}'.format(2*tp/(2*tp+fp+fn)))
 
 
-# In[78]:
+# In[380]:
 
 
 # accuracy function
@@ -225,7 +248,7 @@ def accuracy(y_predicted, y_actual):
     return accuracy_score(y_actual, y_predicted)
 
 
-# In[79]:
+# In[381]:
 
 
 # prediction function for determining label of hypothesis
@@ -235,7 +258,7 @@ def predict(hypothesis):
     return labels
 
 
-# In[80]:
+# In[382]:
 
 
 # logistic regression
@@ -255,7 +278,7 @@ def train(x, y, early_terminate_threshold=0.0, learning_rate=0.0001, no_of_itera
     return w
 
 
-# In[81]:
+# In[383]:
 
 
 # resample function for adaboost
@@ -266,7 +289,7 @@ def resample(x, y, w):
     return x_data, y_data
 
 
-# In[82]:
+# In[384]:
 
 
 # Adaboost
@@ -296,7 +319,7 @@ def adaboost(example_x, example_y, k):
     return h, z
 
 
-# In[83]:
+# In[385]:
 
 
 def logistic_regression_test(training_x, training_y, test_x, test_y, threshold, learning_rate=0.01, no_of_iterations = 10000):
@@ -313,7 +336,7 @@ def logistic_regression_test(training_x, training_y, test_x, test_y, threshold, 
     statistics(y_predict=h_train, y_actual=training_y)
 
 
-# In[84]:
+# In[386]:
 
 
 def adaboost_test(training_x, training_y, test_x, test_y, k):
@@ -335,20 +358,20 @@ def adaboost_test(training_x, training_y, test_x, test_y, k):
     print('Adaboost accuracy for training set k = {} is {}.'.format(k, accuracy(hypo_train, training_y)))
 
 
-# In[85]:
+# In[387]:
 
 
 # telco data
 data = preprocess_telco_data()
 
 
-# In[86]:
+# In[388]:
 
 
-# data
+data
 
 
-# In[87]:
+# In[389]:
 
 
 # Churn data full
@@ -364,7 +387,7 @@ data = preprocess_telco_data()
 # x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.2, random_state=10)
 
 
-# In[88]:
+# In[390]:
 
 
 final_column = data.columns[-1]
@@ -373,7 +396,7 @@ train_dataset, test_dataset = train_test_split(data, test_size=0.2, random_state
 columns = info_gain(train_dataset)
 feature_cutoff = 10
 columns_to_use = columns[0:feature_cutoff]
-# print(columns_to_use)
+print(columns_to_use)
 columns_to_use.append(final_column)
 reduced_training, reduced_test = train_dataset[columns_to_use], test_dataset[columns_to_use]
 
@@ -394,63 +417,63 @@ y_test = np.array([1.0 if it > 0 else -1.0 for it in y_test])
 y_test = y_test.reshape((y_test.shape[0], 1))
 
 
-# In[89]:
+# In[391]:
 
 
-# x_train
+x_train
 
 
-# In[90]:
+# In[392]:
 
 
-# y_train
+y_train
 
 
-# In[91]:
+# In[393]:
 
 
-# x_test
+x_test
 
 
-# In[92]:
+# In[394]:
 
 
-# y_test
+y_test
 
 
-# In[93]:
+# In[395]:
 
 
-logistic_regression_test(x_train, y_train, x_test, y_test, 0.5)
+# logistic_regression_test(x_train, y_train, x_test, y_test, 0.5)
 
 
-# In[94]:
+# In[396]:
 
 
 # for i in range(1, 5):
 #     adaboost_test(x_train, y_train, x_test, y_test, i*5)
 
 
-# In[95]:
+# In[397]:
 
 
 # adult data
 training_set, test_set = preprocess_adult_data()
 
 
-# In[96]:
+# In[398]:
 
 
-# training_set
+training_set
 
 
-# In[97]:
+# In[399]:
 
 
-# test_set
+test_set
 
 
-# In[98]:
+# In[400]:
 
 
 # training_set.insert(0, 'Ones', 1.0)
@@ -472,7 +495,7 @@ training_set, test_set = preprocess_adult_data()
 # y_test = y_test.reshape((y_test.shape[0], 1))
 
 
-# In[99]:
+# In[401]:
 
 
 final_column = training_set.columns[-1]
@@ -481,7 +504,7 @@ columns = info_gain(training_set)
 feature_cutoff = 35
 columns_to_use = columns[0:feature_cutoff]
 # columns_to_use = columns[-feature_cutoff:]
-# print(columns_to_use)
+print(columns_to_use)
 columns_to_use.append(final_column)
 reduced_training, reduced_test = training_set[columns_to_use], test_set[columns_to_use]
 #
@@ -502,33 +525,33 @@ y_test = np.array([1.0 if it > 0 else -1.0 for it in y_test])
 y_test = y_test.reshape((y_test.shape[0], 1))
 
 
-# In[100]:
+# In[402]:
 
 
-logistic_regression_test(x_train, y_train, x_test, y_test, 0.5)
+# logistic_regression_test(x_train, y_train, x_test, y_test, 0.5)
 
 
-# In[101]:
+# In[403]:
 
 
 # for i in range(1, 5):
 #     adaboost_test(x_train, y_train, x_test, y_test, i*5)
 
 
-# In[102]:
+# In[404]:
 
 
 # credit card data
 data = preprocess_cc_data()
 
 
-# In[103]:
+# In[405]:
 
 
-# data
+data
 
 
-# In[104]:
+# In[406]:
 
 
 # credit card data full
@@ -544,7 +567,7 @@ data = preprocess_cc_data()
 # x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.2, random_state=40)
 
 
-# In[105]:
+# In[407]:
 
 
 final_column = data.columns[-1]
@@ -553,7 +576,7 @@ train_dataset, test_dataset = train_test_split(data, test_size=0.2, random_state
 columns = info_gain(train_dataset)
 feature_cutoff = 10
 columns_to_use = columns[0:feature_cutoff]
-# print(columns_to_use)
+print(columns_to_use)
 columns_to_use.append(final_column)
 reduced_training, reduced_test = train_dataset[columns_to_use], test_dataset[columns_to_use]
 #
@@ -574,37 +597,88 @@ y_test = np.array([1.0 if it > 0 else -1.0 for it in y_test])
 y_test = y_test.reshape((y_test.shape[0], 1))
 
 
-# In[106]:
+# In[408]:
 
 
-# x_train
+x_train
 
 
-# In[107]:
+# In[409]:
 
 
-# x_test
+x_test
 
 
-# In[108]:
+# In[410]:
 
 
-# y_train
+y_train
 
 
-# In[109]:
+# In[411]:
 
 
-# y_test
+y_test
 
 
-# In[110]:
+# In[412]:
+
+
+# logistic_regression_test(x_train, y_train, x_test, y_test, 0.5)
+
+
+# In[413]:
+
+
+# for i in range(1, 5):
+#     adaboost_test(x_train, y_train, x_test, y_test, i*5)
+
+
+# In[414]:
+
+
+data = preprocess_online_data()
+
+data
+
+
+# In[415]:
+
+
+final_column = data.columns[-1]
+train_dataset, test_dataset = train_test_split(data, test_size=0.2, random_state=10)
+
+columns = info_gain(train_dataset)
+feature_cutoff = 10
+columns_to_use = columns[0:feature_cutoff]
+print(columns_to_use)
+columns_to_use.append(final_column)
+reduced_training, reduced_test = train_dataset[columns_to_use], test_dataset[columns_to_use]
+
+reduced_training.insert(0, 'Ones', 1.0)
+reduced_training = reduced_training.to_numpy()
+
+reduced_test.insert(0, 'Ones', 1.0)
+reduced_test = reduced_test.to_numpy()
+
+x_train = reduced_training[:, :-1]
+y_train = reduced_training[:, -1]
+y_train = np.array([1.0 if it > 0 else -1.0 for it in y_train])
+y_train = y_train.reshape((y_train.shape[0], 1))
+
+x_test = reduced_test[:, :-1]
+y_test = reduced_test[:, -1]
+y_test = np.array([1.0 if it > 0 else -1.0 for it in y_test])
+y_test = y_test.reshape((y_test.shape[0], 1))
+
+
+# In[416]:
 
 
 logistic_regression_test(x_train, y_train, x_test, y_test, 0.5)
 
 
-# In[111]:
+# In[ ]:
 
 
 # for i in range(1, 5):
