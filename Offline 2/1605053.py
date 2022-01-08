@@ -133,7 +133,7 @@ def baum_welch(state_transition_matrix: np.ndarray, state_count:int, observation
 
 # read data
 observed_states = np.loadtxt('./Input/data.txt', dtype=float).reshape(-1,1)
-observed_states.shape
+# observed_states.shape
 
 
 # In[9]:
@@ -150,7 +150,7 @@ with open('./Input/parameters.txt.txt', 'r') as lines:
     gaussian_parameters = np.genfromtxt(islice(lines, 1+no_of_states, 1+2*no_of_states))
 
 # gaussian_parameters[1,:] = np.sqrt(gaussian_parameters[1,:])
-gaussian_parameters
+# gaussian_parameters
 
 
 # In[10]:
@@ -161,7 +161,7 @@ index_state_map = {
     0: '\"El Nino\"',
     1: '\"La Nina\"'
 }
-initial_distribution.shape
+# initial_distribution.shape
 
 
 # In[11]:
@@ -203,13 +203,13 @@ a, b = baum_welch(transition_matrix, no_of_states, observed_states, gaussian_par
 # In[14]:
 
 
-a
+# a
 
 
 # In[15]:
 
 
-b
+# b
 
 
 # In[16]:
